@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Económica</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Calculadora Económica</h1>
+    <p>Explora y usa 30 fórmulas comunes del mundo académico y laboral</p>
+  </header>
+
+  <main>
+    <section class="formula-list">
+      <h2>Fórmulas disponibles</h2>
+      <div class="grid">
+        <!-- Fórmulas renderizadas dinámicamente -->
+      </div>
+    </section>
+
+    <section class="formula-detail hidden">
+      <button id="volver">← Volver</button>
+      <h2 id="nombre-formula"></h2>
+      <p id="expresion-formula"></p>
+      <form id="datos-formula">
+        <!-- Inputs generados dinámicamente -->
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const formulas = [
+      { nombre: "Interés Simple", expresion: "I = P * r * t", variables: ["P", "r", "t"] },
+      { nombre: "Interés Compuesto", expresion: "A = P(1 + r/n)^(nt)", variables: ["P", "r", "n", "t"] },
+      { nombre: "Valor Futuro", expresion: "VF = VP(1 + i)^n", variables: ["VP", "i", "n"] },
+      { nombre: "Valor Presente", expresion: "VP = VF / (1 + i)^n", variables: ["VF", "i", "n"] },
+      { nombre: "Tasa de Interés", expresion: "i = (VF / VP)^(1/n) - 1", variables: ["VF", "VP", "n"] },
+      { nombre: "Inflación", expresion: "Tasa = (IPC año actual - IPC año base) / IPC año base", variables: ["IPC actual", "IPC base"] },
+      { nombre: "Amortización (cuota fija)", expresion: "C = P * (r(1 + r)^n) / ((1 + r)^n - 1)", variables: ["P", "r", "n"] },
+      { nombre: "Costo Total", expresion: "CT = CF + CV", variables: ["CF", "CV"] },
+      { nombre: "Ingreso Total", expresion: "IT = P * Q", variables: ["P", "Q"] },
+      { nombre: "Costo Medio", expresion: "CM = CT / Q", variables: ["CT", "Q"] },
+      { nombre: "Ingreso Marginal", expresion: "IM = ΔIT / ΔQ", variables: ["ΔIT", "ΔQ"] },
+      { nombre: "Utilidad Bruta", expresion: "UB = Ventas - Costo de ventas", variables: ["Ventas", "Costo ventas"] },
+      { nombre: "Utilidad Neta", expresion: "UN = UB - Gastos", variables: ["UB", "Gastos"] },
+      { nombre: "Margen de ganancia", expresion: "Margen = (Ganancia / Costo) * 100", variables: ["Ganancia", "Costo"] },
+      { nombre: "Punto de equilibrio", expresion: "Q = CF / (P - CVu)", variables: ["CF", "P", "CVu"] },
+      { nombre: "Rentabilidad económica", expresion: "RE = (BAII / Activo total) * 100", variables: ["BAII", "Activo"] },
+      { nombre: "Rentabilidad financiera", expresion: "RF = (BN / Patrimonio) * 100", variables: ["BN", "Patrimonio"] },
+      { nombre: "TIR", expresion: "NPV = 0", variables: [] },
+      { nombre: "VPN", expresion: "VPN = Σ (Ft / (1 + i)^t) - Inversión", variables: ["Ft", "i", "t", "Inversión"] },
+      { nombre: "Apalancamiento", expresion: "AF = AT / PT", variables: ["AT", "PT"] },
+      { nombre: "Liquidez corriente", expresion: "LC = Activo corriente / Pasivo corriente", variables: ["Activo corriente", "Pasivo corriente"] },
+      { nombre: "Capital de trabajo", expresion: "CT = Activo corriente - Pasivo corriente", variables: ["Activo corriente", "Pasivo corriente"] },
+      { nombre: "Rotación de inventario", expresion: "RI = Costo ventas / Inventario prom.", variables: ["Costo ventas", "Inventario"] },
+      { nombre: "Periodo medio de cobro", expresion: "PMC = Cuentas por cobrar * 365 / Ventas", variables: ["Cuentas", "Ventas"] },
+      { nombre: "Costo por unidad", expresion: "CPU = CT / Q", variables: ["CT", "Q"] },
+      { nombre: "Precio de equilibrio", expresion: "P = (CF / Q) + CVu", variables: ["CF", "Q", "CVu"] },
+      { nombre: "Productividad", expresion: "P = Output / Input", variables: ["Output", "Input"] },
+      { nombre: "Índice de endeudamiento", expresion: "IE = Pasivo total / Activo total", variables: ["Pasivo", "Activo"] },
+      { nombre: "Índice de rentabilidad", expresion: "IR = BN / Ventas", variables: ["BN", "Ventas"] },
+      { nombre: "Rotación de activos", expresion: "RA = Ventas / Activo total", variables: ["Ventas", "Activo"] }
+    ];
+
+    const grid = document.querySelector(".grid");
+    const detail = document.querySelector(".formula-detail");
+    const list = document.querySelector(".formula-list");
+
+    formulas.forEach((f, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = `${i + 1}. ${f.nombre}`;
+      btn.onclick = () => {
+        list.classList.add("hidden");
+        detail.classList.remove("hidden");
+        document.getElementById("nombre-formula").textContent = f.nombre;
+        document.getElementById("expresion-formula").textContent = f.expresion;
+
+        const form = document.getElementById("datos-formula");
+        form.innerHTML = "";
+        f.variables.forEach(v => {
+          const label = document.createElement("label");
+          label.textContent = v;
+          const input = document.createElement("input");
+          input.type = "number";
+          input.name = v;
+          label.appendChild(input);
+          form.appendChild(label);
+        });
+      };
+      grid.appendChild(btn);
+    });
+
+    document.getElementById("volver").onclick = () => {
+      detail.classList.add("hidden");
+      list.classList.remove("hidden");
+    };
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
